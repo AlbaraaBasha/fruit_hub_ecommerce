@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fruit_hub/core/helpers/on_generate_routes.dart';
+import 'package:fruit_hub/core/services/shared_prefrences_singlton.dart';
 import 'package:fruit_hub/features/splash/presentation/views/splash_view.dart';
 import 'package:fruit_hub/generated/l10n.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Prefs.init();
   runApp(const FruitHub());
 }
 
@@ -14,7 +17,8 @@ class FruitHub extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      localizationsDelegates: [
+      theme: ThemeData(fontFamily: 'Cairo'),
+      localizationsDelegates: const [
         S.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

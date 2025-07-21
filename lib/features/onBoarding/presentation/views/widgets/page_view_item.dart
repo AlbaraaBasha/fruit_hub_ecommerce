@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fruit_hub/constans.dart';
+import 'package:fruit_hub/core/services/shared_prefrences_singlton.dart';
+import 'package:fruit_hub/core/utils/app_text_styles.dart';
+import 'package:fruit_hub/features/auth/presentation/views/login_view.dart';
 
 class PageViewItem extends StatelessWidget {
   const PageViewItem({
@@ -8,9 +12,11 @@ class PageViewItem extends StatelessWidget {
     required this.subtitle,
     required this.backgroundImage,
     required this.title,
+    required this.isFirstPage,
   });
   final String image, subtitle, backgroundImage;
   final Widget title;
+  final bool isFirstPage;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -31,16 +37,35 @@ class PageViewItem extends StatelessWidget {
                 left: 0,
                 child: SvgPicture.asset(image),
               ),
-              Text('تخط'),
+              Visibility(
+                visible: isFirstPage,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: TextButton(
+                    onPressed: () {
+                      Prefs.setBool(kIsOnboardingSeen, true);
+                      Navigator.pushReplacementNamed(
+                        context,
+                        LoginView.routeName,
+                      );
+                    },
+                    child: const Text('تخط', style: TextStyles.regular13),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
-        SizedBox(height: 26),
+        const SizedBox(height: 26),
         title,
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Text(subtitle),
+          child: Text(
+            subtitle,
+            style: TextStyles.semiBold13,
+            textAlign: TextAlign.center,
+          ),
         ),
       ],
     );
